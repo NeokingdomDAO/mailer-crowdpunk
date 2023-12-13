@@ -88,7 +88,7 @@ async function handleError(
 ) {
   console.error(message);
   event.waitUntil(
-    NEOKINGDOM_NAMESPACE.put(GRAPH_ERROR_TIMESTAMP_KEY, Date.now().toString())
+    CROWDPUNK_NAMESPACE.put(GRAPH_ERROR_TIMESTAMP_KEY, Date.now().toString())
   );
 }
 
@@ -106,12 +106,13 @@ async function fetchData(
     const body = jsonBody as GraphResponse | GraphResponseError;
 
     if ("data" in body) {
-      event.waitUntil(NEOKINGDOM_NAMESPACE.put(GRAPH_ERROR_TIMESTAMP_KEY, ""));
+      event.waitUntil(CROWDPUNK_NAMESPACE.put(GRAPH_ERROR_TIMESTAMP_KEY, ""));
       return body.data;
     }
 
     throw new Error(JSON.stringify(jsonBody));
   } catch (e) {
+    console.log(e);
     await handleError((e as Error).message, event);
     return undefined;
   }
@@ -121,7 +122,7 @@ export async function fetchLastCreatedResolutions(
   event: FetchEvent | ScheduledEvent
 ): Promise<ResolutionData[]> {
   let lastCreateTimestamp =
-    (await NEOKINGDOM_NAMESPACE.get(LAST_CREATE_TIMESTAMP_KEY)) || "0";
+    (await CROWDPUNK_NAMESPACE.get(LAST_CREATE_TIMESTAMP_KEY)) || "0";
 
   const data = (await fetchData(
     event,
@@ -131,7 +132,7 @@ export async function fetchLastCreatedResolutions(
   if (resolutions.length > 0) {
     lastCreateTimestamp = resolutions[resolutions.length - 1].createTimestamp!;
     event.waitUntil(
-      NEOKINGDOM_NAMESPACE.put(LAST_CREATE_TIMESTAMP_KEY, lastCreateTimestamp)
+      CROWDPUNK_NAMESPACE.put(LAST_CREATE_TIMESTAMP_KEY, lastCreateTimestamp)
     );
   }
 
@@ -154,7 +155,7 @@ export async function fetchLastApprovedResolutionIds(
   event: FetchEvent | ScheduledEvent
 ): Promise<ResolutionData[]> {
   let lastApprovedTimestamp =
-    (await NEOKINGDOM_NAMESPACE.get(LAST_APPROVED_TIMESTAMP_KEY)) || "0";
+    (await CROWDPUNK_NAMESPACE.get(LAST_APPROVED_TIMESTAMP_KEY)) || "0";
 
   const resolutions = await fetchApprovedResolutions(
     parseInt(lastApprovedTimestamp),
@@ -165,7 +166,7 @@ export async function fetchLastApprovedResolutionIds(
     lastApprovedTimestamp =
       resolutions[resolutions.length - 1].approveTimestamp!;
     event.waitUntil(
-      NEOKINGDOM_NAMESPACE.put(
+      CROWDPUNK_NAMESPACE.put(
         LAST_APPROVED_TIMESTAMP_KEY,
         lastApprovedTimestamp
       )
@@ -204,7 +205,7 @@ export async function fetchNewOffers(
   event: FetchEvent | ScheduledEvent
 ): Promise<OfferData[]> {
   let lastFetchedOfferTimestamp =
-    (await NEOKINGDOM_NAMESPACE.get(LAST_FETCHED_OFFER_TIMESTAMP_KEY)) || "0";
+    (await CROWDPUNK_NAMESPACE.get(LAST_FETCHED_OFFER_TIMESTAMP_KEY)) || "0";
 
   const data = (await fetchData(
     event,
@@ -215,7 +216,7 @@ export async function fetchNewOffers(
   if (offers.length > 0) {
     lastFetchedOfferTimestamp = offers[offers.length - 1].createTimestamp;
     event.waitUntil(
-      NEOKINGDOM_NAMESPACE.put(
+      CROWDPUNK_NAMESPACE.put(
         LAST_FETCHED_OFFER_TIMESTAMP_KEY,
         lastFetchedOfferTimestamp
       )
@@ -226,7 +227,7 @@ export async function fetchNewOffers(
 }
 
 export async function getGraphErrorTimestamp(): Promise<string | null> {
-  const value = await NEOKINGDOM_NAMESPACE.get(GRAPH_ERROR_TIMESTAMP_KEY);
+  const value = await CROWDPUNK_NAMESPACE.get(GRAPH_ERROR_TIMESTAMP_KEY);
   if (value == "") {
     return null;
   }

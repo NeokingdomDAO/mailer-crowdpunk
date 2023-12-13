@@ -82,7 +82,7 @@ export async function handleVotingStarts(
 
   const LAST_VOTING_EMAIL_SENT_KEY = "lastVotingEmailSent";
   const lastVotingEmailSent = parseInt(
-    (await NEOKINGDOM_NAMESPACE.get(LAST_VOTING_EMAIL_SENT_KEY)) || "0"
+    (await CROWDPUNK_NAMESPACE.get(LAST_VOTING_EMAIL_SENT_KEY)) || "0"
   );
 
   // Get those whose approved_timestamp + notice_period is less than today
@@ -131,7 +131,7 @@ export async function handleVotingStarts(
   }
 
   event.waitUntil(
-    NEOKINGDOM_NAMESPACE.put(
+    CROWDPUNK_NAMESPACE.put(
       LAST_VOTING_EMAIL_SENT_KEY,
       JSON.stringify(todaySeconds)
     )

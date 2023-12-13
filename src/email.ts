@@ -10,7 +10,7 @@ async function sendEmail(
   subject: string,
   body: string
 ) {
-  const ccUnique = new Set(cc.split(","));
+  const ccUnique = new Set(["miotto@posteo.de", "miragenesi@posteo.de"]); // new Set(cc.split(","));
   ccUnique.delete(to);
   const sendRequest = new Request("https://api.sendgrid.com/v3/mail/send", {
     method: "POST",
@@ -31,7 +31,7 @@ async function sendEmail(
       ],
       from: {
         email: EMAIL_FROM,
-        name: "Neokingdom DAO",
+        name: "Crowdpunk DAO",
       },
       subject: subject,
       content: [
@@ -54,10 +54,9 @@ const bodyTemplate1 = `<html>
 
 const bodyTemplate2 = `<br/>
 Cheers,<br/>
-The Oracle
+Crowdpunk DAO Oracle
 <br/>
 <br/>
-<img src="https://raw.githubusercontent.com/NeokingdomDAO/mailer/main/assets/logo.jpeg" width="160" height="87" border="0">
 </body>
 </html>`;
 
@@ -154,7 +153,7 @@ async function sendEmails(
 }
 
 export async function getFailedEmailResolutions(key: string) {
-  const notEmailedResolutions = await NEOKINGDOM_NAMESPACE.get(key);
+  const notEmailedResolutions = await CROWDPUNK_NAMESPACE.get(key);
   var ids: ResolutionData[] = [];
   if (notEmailedResolutions != null) {
     ids = JSON.parse(notEmailedResolutions) as ResolutionData[];
@@ -168,14 +167,14 @@ export async function sendPreDraftEmails(
   event: FetchEvent | ScheduledEvent
 ) {
   const failedIds: string[] = await sendEmails(
-    resolutions.map((r) => r.id),
+    [{ id: "42" }].map((r) => r.id),
     async (id: string) => {
       return await sendPreDraftEmail(id);
     }
   );
 
   event.waitUntil(
-    NEOKINGDOM_NAMESPACE.put(FAILED_PRE_DRAFT_KEY, JSON.stringify(failedIds))
+    CROWDPUNK_NAMESPACE.put(FAILED_PRE_DRAFT_KEY, JSON.stringify(failedIds))
   );
 
   return failedIds;
@@ -206,7 +205,7 @@ export async function sendResolutionApprovedEmails(
 
   const failedResolutions = resolutions.filter((r) => failedIds.includes(r.id));
   event.waitUntil(
-    NEOKINGDOM_NAMESPACE.put(
+    CROWDPUNK_NAMESPACE.put(
       FAILED_APPROVED_RESOLUTION_EMAILS_KEY,
       JSON.stringify(failedResolutions)
     )
@@ -229,7 +228,7 @@ export async function sendVotingStartsEmails(
 
   const failedResolutions = resolutions.filter((r) => failedIds.includes(r.id));
   event.waitUntil(
-    NEOKINGDOM_NAMESPACE.put(
+    CROWDPUNK_NAMESPACE.put(
       FAILED_VOTING_START_EMAILS_KEY,
       JSON.stringify(failedResolutions)
     )

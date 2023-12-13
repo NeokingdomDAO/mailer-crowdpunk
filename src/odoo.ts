@@ -51,12 +51,11 @@ async function call(
     });
 
     const json = (await response.json()) as OdooResponse | OdooResponseError;
-
     if ("error" in json) {
       throw new Error(json.error.message);
     } else {
       if (json.result !== false) {
-        event.waitUntil(NEOKINGDOM_NAMESPACE.put(ODOO_ERROR_TIMESTAMP_KEY, ""));
+        event.waitUntil(CROWDPUNK_NAMESPACE.put(ODOO_ERROR_TIMESTAMP_KEY, ""));
         return json;
       } else {
         throw new Error("Odoo returned a 'false' response");
@@ -65,7 +64,7 @@ async function call(
   } catch (e) {
     console.error(e);
     event.waitUntil(
-      NEOKINGDOM_NAMESPACE.put(ODOO_ERROR_TIMESTAMP_KEY, Date.now().toString())
+      CROWDPUNK_NAMESPACE.put(ODOO_ERROR_TIMESTAMP_KEY, Date.now().toString())
     );
     return undefined;
   }
@@ -78,7 +77,7 @@ async function login(event: FetchEvent | ScheduledEvent) {
     params: {
       service: "common",
       method: "login",
-      args: ["neokingdomdao", ODOO_USERNAME, ODOO_PASSWORD],
+      args: ["neok_test_psql", ODOO_USERNAME, ODOO_PASSWORD],
     },
     id: uuidv4(),
   };
@@ -99,7 +98,7 @@ async function users(
       service: "object",
       method: "execute_kw",
       args: [
-        "neokingdomdao",
+        "neok_test_psql",
         requestId,
         ODOO_PASSWORD,
         "res.users",
@@ -138,7 +137,7 @@ export async function fetchOdooUsers(event: FetchEvent | ScheduledEvent) {
 }
 
 export async function getOdooErrorTimestamp(): Promise<string | null> {
-  const value = await NEOKINGDOM_NAMESPACE.get(ODOO_ERROR_TIMESTAMP_KEY);
+  const value = await CROWDPUNK_NAMESPACE.get(ODOO_ERROR_TIMESTAMP_KEY);
   if (value == "") {
     return null;
   }

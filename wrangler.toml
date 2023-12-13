@@ -1,4 +1,4 @@
-name = "neokingdomdao-mailer"
+name = "crowdpunkdao-mailer"
 main = "dist/index.mjs"
 compatibility_date = "2022-05-28"
 compatibility_flags = []
@@ -9,31 +9,31 @@ command = "node build.js"
 
 [env.staging]
 workers_dev = true
-name = "neokingdomdao-mailer-staging"
+name = "crowdpunkdao-mailer-staging"
 kv_namespaces = [ 
-         { binding = "NEOKINGDOM_NAMESPACE", id = "8958bed27b1841f680e574d60112efb5" }
+         { binding = "CROWDPUNK_NAMESPACE", id = "fff8e877aa6e4906870d930e50cf144b" }
 ]
 [env.staging.vars]
-SUBGRAPH_API = "https://api.neokingdom.org/subgraphs/name/NeokingdomDAO/dao"
-EMAIL_FROM = "dao@neokingdom.org"
+SUBGRAPH_API = "https://api2.neokingdom.org/subgraphs/name/CrowdpunkDAO"
+EMAIL_FROM = "admin@crowdpunk.love"
 EMAIL_TO = "nicola@neokingdom.org"
 EMAIL_CC = "alberto@granzotto.net,stefano.ceschib@gmail.com"
-ODOO_API = "https://odoo.neokingdom.org/jsonrpc"
-DAO_URL = "https://dao.neokingdom.org"
+ODOO_API = "http://85.209.49.64/jsonrpc"
+DAO_URL = "https://dao.crowdpunk.love"
 
 [env.production]
-name = "neokingdomdao-mailer"
+name = "crowdpunkdao-mailer"
 workers_dev = true
 kv_namespaces = [ 
-         { binding = "NEOKINGDOM_NAMESPACE", id = "6d497c85b3fe44b99c5ab4e6147f3928" }
+         { binding = "CROWDPUNK_NAMESPACE", id = "98a84ae633fd48b3bbf066a45a5cb488" }
 ]
 [env.production.vars]
-SUBGRAPH_API = "https://api.neokingdom.org/subgraphs/name/NeokingdomDAO/vigodarzere"
-EMAIL_FROM = "dao@neokingdom.org"
+SUBGRAPH_API = "https://api2.neokingdom.org/subgraphs/name/CrowdpunkDAO"
+EMAIL_FROM = "admin@crowdpunk.love"
 EMAIL_TO = "benjamin@neokingdom.org"
 EMAIL_CC = "alberto@granzotto.net,stefano.ceschib@gmail.com,nicola@neokingdom.org"
-ODOO_API = "https://odoo.neokingdom.org/jsonrpc"
-DAO_URL = "https://dao.neokingdom.org"
+ODOO_API = "http://85.209.49.64/jsonrpc"
+DAO_URL = "https://dao.crowdpunk.love"
 
 [miniflare]
 env_path = ".env.test"             # --env

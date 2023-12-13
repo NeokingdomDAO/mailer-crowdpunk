@@ -10,5 +10,5 @@ declare global {
   const SUBGRAPH_API: string;
   const DAO_URL: string;
   const SENDGRID_API_KEY: string;
-  const NEOKINGDOM_NAMESPACE: KVNamespace;
+  const CROWDPUNK_NAMESPACE: KVNamespace;
 }
