@@ -112,7 +112,6 @@ async function fetchData(
 
     throw new Error(JSON.stringify(jsonBody));
   } catch (e) {
-    console.log(e);
     await handleError((e as Error).message, event);
     return undefined;
   }

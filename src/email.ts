@@ -10,7 +10,7 @@ async function sendEmail(
   subject: string,
   body: string
 ) {
-  const ccUnique = new Set(["miotto@posteo.de", "miragenesi@posteo.de"]); // new Set(cc.split(","));
+  const ccUnique = new Set(cc.split(","));
   ccUnique.delete(to);
   const sendRequest = new Request("https://api.sendgrid.com/v3/mail/send", {
     method: "POST",
@@ -167,7 +167,7 @@ export async function sendPreDraftEmails(
   event: FetchEvent | ScheduledEvent
 ) {
   const failedIds: string[] = await sendEmails(
-    [{ id: "42" }].map((r) => r.id),
+    resolutions.map((r) => r.id),
     async (id: string) => {
       return await sendPreDraftEmail(id);
     }
