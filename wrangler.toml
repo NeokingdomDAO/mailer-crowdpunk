@@ -11,28 +11,28 @@ command = "node build.js"
 workers_dev = true
 name = "crowdpunkdao-mailer-staging"
 kv_namespaces = [ 
-         { binding = "CROWDPUNK_NAMESPACE", id = "fff8e877aa6e4906870d930e50cf144b" }
+         { binding = "CROWDPUNK_NAMESPACE", id = "fff8e877aa6e4906870d930e50cf144b", preview_id = "86b10edf68b64945bd19af1269803995" }
 ]
 [env.staging.vars]
 SUBGRAPH_API = "https://api2.neokingdom.org/subgraphs/name/CrowdpunkDAO"
 EMAIL_FROM = "admin@crowdpunk.love"
 EMAIL_TO = "nicola@neokingdom.org"
 EMAIL_CC = "alberto@granzotto.net,stefano.ceschib@gmail.com"
-ODOO_API = "http://85.209.49.64/jsonrpc"
+ODOO_API = "https://odoo.crowdpunk.love/jsonrpc"
 DAO_URL = "https://dao.crowdpunk.love"
 
 [env.production]
 name = "crowdpunkdao-mailer"
 workers_dev = true
 kv_namespaces = [ 
-         { binding = "CROWDPUNK_NAMESPACE", id = "98a84ae633fd48b3bbf066a45a5cb488" }
+         { binding = "CROWDPUNK_NAMESPACE", id = "98a84ae633fd48b3bbf066a45a5cb488", preview_id = "86b10edf68b64945bd19af1269803995" }
 ]
 [env.production.vars]
 SUBGRAPH_API = "https://api2.neokingdom.org/subgraphs/name/CrowdpunkDAO"
 EMAIL_FROM = "admin@crowdpunk.love"
 EMAIL_TO = "benjamin@neokingdom.org"
 EMAIL_CC = "alberto@granzotto.net,stefano.ceschib@gmail.com,nicola@neokingdom.org"
-ODOO_API = "http://85.209.49.64/jsonrpc"
+ODOO_API = "https://odoo.crowdpunk.love/jsonrpc"
 DAO_URL = "https://dao.crowdpunk.love"
 
 [miniflare]
